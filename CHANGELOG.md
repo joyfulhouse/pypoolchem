@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2025-12-02
+
+### Changed
+
+- Relaxed pydantic dependency from `>=2.12.5` to `>=2.10.0` for Home Assistant 2025.11 compatibility
+
 ## [0.1.0] - 2024-12-02
 
 ### Added
@@ -53,5 +59,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - PEP 561 py.typed marker for type checker support
 - Comprehensive documentation
 
-[Unreleased]: https://github.com/joyfulhouse/pypoolchem/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/joyfulhouse/pypoolchem/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/joyfulhouse/pypoolchem/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/joyfulhouse/pypoolchem/releases/tag/v0.1.0
