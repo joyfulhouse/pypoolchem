@@ -64,7 +64,7 @@ from pypoolchem.utils.conversions import (
 )
 from pypoolchem.utils.volume import PoolShape, calculate_pool_volume
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 __all__ = [
     # Version
