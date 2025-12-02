@@ -5,9 +5,71 @@ on:
     types: [published]
 
 jobs:
+  validate:
+    name: Validate Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - name: Set up Python
+        run: uv python install 3.13
+
+      - name: Get release version
+        id: release
+        env:
+          TAG_NAME: ${{ github.event.release.tag_name }}
+        run: |
+          # Strip 'v' prefix if present
+          VERSION="${TAG_NAME#v}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Release version: $VERSION"
+
+      - name: Verify pyproject.toml version
+        env:
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          PYPROJECT_VERSION=$(grep -E '^version = ' pyproject.toml | head -1 | sed 's/version = "\(.*\)"/\1/')
+          echo "pyproject.toml version: $PYPROJECT_VERSION"
+          echo "Release version: $RELEASE_VERSION"
+          if [ "$PYPROJECT_VERSION" != "$RELEASE_VERSION" ]; then
+            echo "::error::Version mismatch! pyproject.toml ($PYPROJECT_VERSION) != release tag ($RELEASE_VERSION)"
+            exit 1
+          fi
+          echo "✓ pyproject.toml version matches"
+
+      - name: Verify __init__.py version
+        env:
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          INIT_VERSION=$(grep -E '^__version__ = ' src/pypoolchem/__init__.py | sed 's/__version__ = "\(.*\)"/\1/')
+          echo "__init__.py version: $INIT_VERSION"
+          echo "Release version: $RELEASE_VERSION"
+          if [ "$INIT_VERSION" != "$RELEASE_VERSION" ]; then
+            echo "::error::Version mismatch! __init__.py ($INIT_VERSION) != release tag ($RELEASE_VERSION)"
+            exit 1
+          fi
+          echo "✓ __init__.py version matches"
+
+      - name: Verify CHANGELOG.md updated
+        env:
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          if ! grep -q "## \[$RELEASE_VERSION\]" CHANGELOG.md; then
+            echo "::error::CHANGELOG.md does not contain entry for version $RELEASE_VERSION"
+            echo "Expected to find: ## [$RELEASE_VERSION]"
+            exit 1
+          fi
+          echo "✓ CHANGELOG.md contains entry for $RELEASE_VERSION"
+
   build:
     name: Build Package
     runs-on: ubuntu-latest
+    needs: validate
     steps:
       - uses: actions/checkout@v4
 
