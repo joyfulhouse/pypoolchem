@@ -10,7 +10,7 @@ readme = "README.md"
 license = "MIT"
 requires-python = ">=3.13"
 authors = [
-    { name = "Bryan Li" },
+    { name = "JoyfulHouse Real Estate LLC" },
 ]
 keywords = [
     "pool",
@@ -50,6 +50,7 @@ dev = [
 Homepage = "https://github.com/joyfulhouse/pypoolchem"
 Repository = "https://github.com/joyfulhouse/pypoolchem"
 Documentation = "https://github.com/joyfulhouse/pypoolchem#readme"
+Changelog = "https://github.com/joyfulhouse/pypoolchem/blob/main/CHANGELOG.md"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/pypoolchem"]

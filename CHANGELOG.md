@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Relaxed pydantic dependency from `>=2.12.5` to `>=2.10.0` for Home Assistant 2025.11 compatibility
 
-## [0.1.0] - 2024-12-02
+## [0.1.0] - 2025-12-02
 
 ### Added
 
